@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <Canvas></Canvas>
-  </div>
+    <div>
+
+    </div>
 </template>
 
 <script setup>
-import Canvas from "@/components/canvas.vue"
+
 </script>
 
 <style lang="scss" scoped>
