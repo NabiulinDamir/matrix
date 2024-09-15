@@ -1,12 +1,7 @@
 <template>
     <div>
       <table>
-        <!-- <thead>
-          <tr>
-            <th v-for="(item, index) in Matrix[0]" :key="index"> {{ index + 1 }}</th>
-          </tr>
-        </thead> -->
-        <tbody>
+        <tbody  v-if="Matrix && Matrix.length">
           <tr v-for="(row, rowIndex) in Matrix" :key="rowIndex">
             <td v-for="(cell, colIndex) in row" :key="colIndex">{{ cell }}</td>
           </tr>
@@ -21,7 +16,7 @@
   const props = defineProps({
     Matrix: {
       type: Array,
-      required: true
+    //   required: true
     }
   });
   </script>
@@ -35,7 +30,6 @@
   
   th, td {
     border: 1px solid #ccc;
-    /* padding: 8px; */
     text-align: center;
     user-select: none;
   }
