@@ -1,20 +1,28 @@
 <template>
-  <div class="MainContainer">
+  <div>
+    <div class="MainContainer">
     <div class="FillContainer">
       <div class="MatrixName">Начальная</div>
       <div class="MatrixName">Конечная</div>
-      <div class="MatrixContainer"></div>     <!--сюды первую матрицу-->
+      <div class="MatrixContainer"><FillMatrix :matrix="matrix" /></div>     <!--сюды первую матрицу-->
       <div class="MatrixContainer"></div>     <!--сюды вторую матрицу-->
+      <input type="button" value="rand" @click="randomize">
     </div>
     <Canvas :startMatrix="StartMatrix" :finishMatrix="FinishMatrix"></Canvas>
+  </div>
   </div>
 </template>
 
 <script setup>
-import Canvas from "@/components/canvas.vue"
-let StartMatrix  = [[2, 4, 3],[1, 8, 5],[7, 0, 6],];//здесь должна быть матрица из компонента
-let FinishMatrix = [[1, 2, 3],[4, 5, 6],[7, 8, 0],];//здесь должна быть матрица из компонента
+import { ref, reactive } from 'vue'
+import Canvas from '@/components/canvas.vue'
+import FillMatrix from '@/components/FillMatrix.vue'
 
+const matrix = ref([
+	[1, 2, 3],
+	[4, 5, 6],
+	[7, 8, 0],
+])
 </script>
 
 <style lang="scss" scoped>
