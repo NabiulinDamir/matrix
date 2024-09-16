@@ -89,5 +89,6 @@ function callExternalMethod() {
   width: 100%;
   border-top: 1px solid black;
   display: flex;
+  place-content: center;
 }
 </style>
