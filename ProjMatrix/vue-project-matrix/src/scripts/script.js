@@ -4,22 +4,27 @@ export function triggerComponentMethod(componentInstance) {
         typeof componentInstance.someMethod === "function" &&
         typeof componentInstance.addStroke === "function" &&
         typeof componentInstance.addNode === "function" &&
-        typeof componentInstance.ClearCanvas === "function"
+        typeof componentInstance.AddSteps === "function" &&
+        typeof componentInstance.addElement === "function"
     ) {
-        componentInstance.ClearCanvas()
+        
         componentInstance.someMethod("ожидайте"); // Вызываем метод компонента
         
-    
-        let StartMatrix = [
-            [2, 4, 3],
-            [1, 8, 5],
-            [7, 0, 6],
-        ];
-        let FinishMatrix = [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 0],
-        ];
+
+        let StartMatrix = componentInstance.sm
+        let FinishMatrix = componentInstance.fm
+        // let StartMatrix = componentInstance.startMatrix
+        // let FinishMatrix = componentInstance.finishMatrix
+        // let StartMatrix = [
+        //     [2, 4, 3],
+        //     [1, 8, 5],
+        //     [7, 0, 6],
+        // ];
+        // let FinishMatrix = [
+        //     [1, 2, 3],
+        //     [4, 5, 6],
+        //     [7, 8, 0],
+        // ];
 
         class MatrixTree {
             constructor(matrix, FinishMatrix) {
@@ -46,7 +51,7 @@ export function triggerComponentMethod(componentInstance) {
             print(node){
                 node.print()
                 if (node.children.length === 0) {
-                    console.log("низуя")
+                    // console.log("низуя")
                     return
                 } else {
                     node.children.forEach(child => {
@@ -79,20 +84,32 @@ export function triggerComponentMethod(componentInstance) {
 // componentInstance.addNode(node.matrix, node.level)
             }
 
+
+            PrintSolution(node){
+                while(node.matrix != this.Head.matrix){
+                    componentInstance.addElement(node.matrix);
+                    node = node.father
+                }
+                componentInstance.addElement(this.Head.matrix);
+                
+            }
+
             async Game() {
                 setTimeout(() => {
                     if (!this.StopGame) {
-                        componentInstance.someMethod("игра не решаема"); //Добавить вызов внешней функции
+                        componentInstance.someMethod("превышено время ожидания"); //Добавить вызов внешней функции
                         this.StopGame = true;
                     }
-                }, 3000);
+                }, 30000);
 
                 // Основной цикл игры
                 while (!this.StopGame) {
                     this.StopRecurse = false;
                     this.minQ = 999;
+                    
                     this.FindMinQ(this.Head);
                     this.FindQ_Steps(this.Head);
+
 
                     await new Promise((resolve) => setTimeout(resolve, 0));
                 }
@@ -100,17 +117,20 @@ export function triggerComponentMethod(componentInstance) {
             }
 
             FindQ_Steps(node) {
+                
                 if (!this.StopRecurse) {
                     if (
                         node.children.length === 0 &&
                         node.returnQ() === this.minQ
                     ) {
-                        if (node.g === 0) {
+                        if (node.g == 0) {
                             this.StopGame = true;
-                            this.PrintInCanvas(this.Head)
+                            // this.PrintInCanvas(this.Head)
                             componentInstance.someMethod("ура, победа"); //Добавить вызов внешней функции
+                            this.PrintSolution(node);
                             
                         } else {
+                            componentInstance.AddSteps()
                             node.step();
                             // componentInstance.addStroke(node.level + 1);
                             this.StopRecurse = true;
@@ -135,7 +155,7 @@ export function triggerComponentMethod(componentInstance) {
             }
 
             returnQ() {
-                return this.level + this.g;
+                return 10 * this.level + this.g;
             }
 
             returnG() {
@@ -190,14 +210,7 @@ export function triggerComponentMethod(componentInstance) {
                                     tmpMatrix[i - 1][j],
                                     tmpMatrix[i][j],
                                 ]; // вверх
-                                if (
-                                    this.father == null ||
-                                    (this.father !== null &&
-                                        !this.matricesAreEqual(
-                                            tmpMatrix,
-                                            this.father.matrix
-                                        ))
-                                ) {
+                                if (this.father == null || (this.father !== null && !this.matricesAreEqual(tmpMatrix,this.father.matrix))){
                                     this.addChild(tmpMatrix);
                                     // componentInstance.addNode(tmpMatrix, this.level+1)
                                 }

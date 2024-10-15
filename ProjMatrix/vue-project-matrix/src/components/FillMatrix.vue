@@ -1,13 +1,81 @@
 <template>
     <div class="wrapper">
-        <input type="button" v-for="v in arr" :key="v" :value="v" :disabled="v===0">
+        
     </div>
 </template>
 
 <script setup>
-import {ref} from "vue"
-const props = defineProps(["matrix"])
-const arr = ref([].concat(props.matrix[0],props.matrix[1],props.matrix[2] ))
+import {ref, watch, defineEmits } from "vue"
+const props = defineProps({
+    TypeMatrix:{
+        type: Number,
+        required: true
+    }
+
+});
+const emit = defineEmits();
+const sendData = () => {
+  emit('dataSent', 'Некоторые данные');
+};
+// const type = ref(0);
+let Matrix = [
+	[1, 2, 3],
+	[4, 5, 6],
+	[7, 8, 0],
+];
+watch(TypeMatrix => {
+    if(TypeMatrix==0){
+        Matrix = [
+            [2, 4, 3],
+            [1, 8, 5],
+            [7, 0, 6],
+        ];
+    }
+    else if(TypeMatrix == 1){
+        Matrix = [
+            [2, 4, 3],
+            [1, 8, 5],
+            [7, 0, 6],
+        ];
+    }
+    else if(TypeMatrix == 2){
+        const numbers = [0,1,2,3,4,5,6,7,8,9]
+        const randNumbers = numbers.sort(() => Math.random() - 0.5);
+        const newmatrix = [];
+    
+        for (let i = 0; i < 2; i++) {
+            newmatrix[i] = [];
+            for (let j = 0; j < 2; j++) {
+                // Заполняем матрицу уникальными значениями
+                newmatrix[i][j] = randNumbers[i * j + j];
+            }
+        }
+        Matrix = newmatrix;
+    }
+    console.table(Matrix)
+})
+
+
+
+let DefaultMAtrix = [
+  [2, 4, 3],
+  [1, 8, 5],
+  [7, 0, 6],
+];
+
+const StartMatrix = [
+	[1, 2, 3],
+	[4, 5, 6],
+	[7, 8, 0],
+];
+
+let FinishMatrix = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 0],
+];
+
+
 </script>
 
 <style scoped>
