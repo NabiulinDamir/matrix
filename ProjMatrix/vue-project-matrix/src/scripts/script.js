@@ -2,8 +2,6 @@ export function triggerComponentMethod(componentInstance) {
     if (
         componentInstance &&
         typeof componentInstance.someMethod === "function" &&
-        typeof componentInstance.addStroke === "function" &&
-        typeof componentInstance.addNode === "function" &&
         typeof componentInstance.AddSteps === "function" &&
         typeof componentInstance.addElement === "function"
     ) {
@@ -13,8 +11,8 @@ export function triggerComponentMethod(componentInstance) {
 
         let StartMatrix = componentInstance.sm
         let FinishMatrix = componentInstance.fm
-        // let StartMatrix = componentInstance.startMatrix
-        // let FinishMatrix = componentInstance.finishMatrix
+
+        
         // let StartMatrix = [
         //     [2, 4, 3],
         //     [1, 8, 5],
@@ -48,49 +46,12 @@ export function triggerComponentMethod(componentInstance) {
                 }
             }
 
-            print(node){
-                node.print()
-                if (node.children.length === 0) {
-                    // console.log("низуя")
-                    return
-                } else {
-                    node.children.forEach(child => {
-                        this.print(child)
-                    });
-                }
-                return
-        
-            }
-            PrintInCanvas(node){
-                componentInstance.addNode(node.matrix, node.level)
-                if(node.children.length === 0){
-                    // console.log("нет детей")
-                    return
-
-                }
-                else{
-                    componentInstance.addStroke(node.level + 2);
-                    node.children.forEach((child) => {
-                        this.PrintInCanvas(child)
-
-                    })
-                    
-                    // console.log(node.level)
-                }
-
-
-
-// componentInstance.addStroke(node.level + 1);
-// componentInstance.addNode(node.matrix, node.level)
-            }
-
-
             PrintSolution(node){
                 while(node.matrix != this.Head.matrix){
-                    componentInstance.addElement(node.matrix);
+                    componentInstance.addElement(node.matrix, node.level, node.g, node.returnQ());
                     node = node.father
                 }
-                componentInstance.addElement(this.Head.matrix);
+                componentInstance.addElement(this.Head.matrix, this.Head.level, this.Head.g, this.Head.returnQ());
                 
             }
 
@@ -132,7 +93,6 @@ export function triggerComponentMethod(componentInstance) {
                         } else {
                             componentInstance.AddSteps()
                             node.step();
-                            // componentInstance.addStroke(node.level + 1);
                             this.StopRecurse = true;
                         }
                     } else {
@@ -155,7 +115,7 @@ export function triggerComponentMethod(componentInstance) {
             }
 
             returnQ() {
-                return 10 * this.level + this.g;
+                return this.level + this.g;
             }
 
             returnG() {
@@ -212,7 +172,6 @@ export function triggerComponentMethod(componentInstance) {
                                 ]; // вверх
                                 if (this.father == null || (this.father !== null && !this.matricesAreEqual(tmpMatrix,this.father.matrix))){
                                     this.addChild(tmpMatrix);
-                                    // componentInstance.addNode(tmpMatrix, this.level+1)
                                 }
                             }
                             if (i < column - 1) {
@@ -230,7 +189,6 @@ export function triggerComponentMethod(componentInstance) {
                                         ))
                                 ) {
                                     this.addChild(tmpMatrix);
-                                    // componentInstance.addNode(tmpMatrix, this.level+1)
                                 }
                             }
                             if (j > 0) {
@@ -248,7 +206,6 @@ export function triggerComponentMethod(componentInstance) {
                                         ))
                                 ) {
                                     this.addChild(tmpMatrix);
-                                    // componentInstance.addNode(tmpMatrix, this.level+1)
                                 }
                             }
                             if (j < row - 1) {
@@ -266,7 +223,6 @@ export function triggerComponentMethod(componentInstance) {
                                         ))
                                 ) {
                                     this.addChild(tmpMatrix);
-                                    // componentInstance.addNode(tmpMatrix, this.level+1)
                                 }
                             }
                         }

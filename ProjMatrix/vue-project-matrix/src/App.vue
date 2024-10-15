@@ -13,8 +13,6 @@
         <input type="button" value="Сброс" @click="Clear">
         <input type="button" value="Дефолт" @click="Default">
       </div>
-      <!-- <div>{{ StartMatrix.value }}</div> -->
-      <!-- Передача значений через .value -->
       <Canvas :startMatrix="StartMatrix.value" :finishMatrix="FinishMatrix"></Canvas>
     </div>
   </div>
@@ -80,10 +78,6 @@ const Change = (v) => {
       }
     }
   }
-
-  // Обновляем StartArr с первым 3 строками StartMatrix.value
-  
-  // console.table(StartMatrix.value); // Раскомментируйте для отладки
 }
 
 
@@ -93,7 +87,9 @@ const Change = (v) => {
 .FillContainer{
   height: 180px;
   width: 310px;
-  background-color: aqua;
+  // border: 1px solid black;
+  // padding: 5px;
+  // border-radius: 10px;
   display: grid;
   grid-template-rows: 25px 1fr; 
   grid-template-columns: repeat(2, 1fr);

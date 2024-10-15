@@ -2,22 +2,17 @@
   <div class="MainContainer">
     <h1>{{ message }}</h1>
     <button @click="callExternalMethod">Вызвать метод из скрипта</button><div>шаги:{{ step }}</div>
-    <!-- <div class="TreeContainer"> -->
-      <div class="LevelContainer"><MatrixComp class="Matrix" v-for="matrix in MasNode" :Matrix="matrix"></MatrixComp></div>
-        <!-- <div class="LevelContainer" v-for="(level, index) in elementsTree" :key="index">
-          <MatrixComp 
-            v-for="(matrix, matrixIndex) in level" 
-            :key="matrixIndex" 
-            :Matrix="matrix"
-          ></MatrixComp>
-        </div> -->
-
-      <!-- <MatrixComp :matrix="startMatrix"></MatrixComp>
-      <hr/>
-      <MatrixComp :matrix="finishMatrix"></MatrixComp> -->
+      <div class="LevelContainer"> <MatrixComp 
+    v-for="(matrix, index) in MasNode" 
+    :key="index" 
+    class="Matrix" 
+    :Matrix="matrix[0]" 
+    :Level="matrix[1]"
+    :G="matrix[2]"
+    :Q="matrix[3]"
+  /></div>
     </div>
-    <!-- <pre>{{ finishMatrix }}</pre> -->
-  <!-- </div> -->
+
    
   
 </template>
@@ -26,8 +21,6 @@
 import { triggerComponentMethod } from '@/scripts/script.js';
 import { defineProps, ref, computed } from 'vue';
 import  MatrixComp  from "@/components/Matrix.vue"
-
-const elementsTree = ref([]);
 
 const props = defineProps({
   startMatrix: {
@@ -40,44 +33,19 @@ const props = defineProps({
   }
 });
 
-// console.table(props.startMatrix)
-
-const message = ref('Привет, мир!');
+const message = ref('Дмитрий Ермаков : )');
 let MasNode = ref([])
 
-function addElement(Element){
-  MasNode.value.push(Element)
-  // console.log(Element)
+
+function addElement(Element, level, g, q){
+  MasNode.value.push([Element,level, g, q])
 }
 let step = ref(0);
 function AddSteps(){step.value++}
 
-function addStroke(level){
-  // console.log(elementsTree.value.length , "-" ,level)
-  if(elementsTree.value.length <= level){
-    elementsTree.value.push([]);
-    // console.log("да")
-  }
-  else{
-    // console.log("наин")
-  }
-}
-function addNode(matrix, level) {
-  // Убедитесь, что массив на нужном уровне существует
-  if (!elementsTree.value[level]) {
-    // Если нет, создаем его
-    elementsTree.value[level] = [matrix];
-  }
-  
-  // Добавляем элемент matrix в массив на нужном уровне
-  elementsTree.value[level].push(matrix);
-}
 function someMethod(text) {
   message.value = text;
-  
 }
-
-
 
 let fm = props.finishMatrix
 
@@ -85,7 +53,7 @@ function callExternalMethod() {
   step.value = 0
   MasNode.value = ([]);
   const sm = computed(()=>props.startMatrix).value
-  triggerComponentMethod({ sm, fm, someMethod,addStroke,addNode,addElement,AddSteps });
+  triggerComponentMethod({ sm, fm, someMethod,addElement,AddSteps });
 }
 </script>
 

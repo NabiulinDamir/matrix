@@ -7,6 +7,9 @@
           </tr>
         </tbody>
       </table>
+      L:{{ Level }}
+      G:{{ G }}
+      Q:{{ Q }}
     </div>
   </template>
   
@@ -16,9 +19,12 @@
   const props = defineProps({
     Matrix: {
       type: Array,
-    //   required: true
-    }
+    },
+    Level: {type: Number},
+    G:{type: Number},
+    Q:{type: Number},
   });
+  // console.log(Level)
   </script>
   
   <style>
